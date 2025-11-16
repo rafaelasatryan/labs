@@ -2,7 +2,7 @@
 #include <windows.h>
 #include <iostream>
 #include <ctime>
-#include <limits>  // для проверки и очистки потока ввода
+#include <limits>
 
 using namespace std;
 
@@ -127,3 +127,4 @@ int main() {
     cout << "\nКуча успешно удалена. Работа завершена.\n";
     return 0;
 }
+
