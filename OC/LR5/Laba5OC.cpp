@@ -1,4 +1,4 @@
-﻿#include <windows.h>
+#include <windows.h>
 #include <iostream>
 #include <string>
 #include <cstdlib>
@@ -11,21 +11,6 @@ HANDLE g_mutex = nullptr;
 volatile int g_turn = 0;
 
 
-[[noreturn]] void FatalWinError(const char* msg) {
-    DWORD e = GetLastError();
-    LPVOID buf = nullptr;
-
-    FormatMessageA(
-        FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-        NULL, e, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-        (LPSTR)&buf, 0, NULL
-    );
-    std::cerr << msg << " (Error " << e << "): " << (char*)buf << "\n";
-    LocalFree(buf);
-    ExitProcess(e);
-}
-
-
 struct ThreadArg {
     std::string phrase;
     int id = 0;
@@ -33,7 +18,7 @@ struct ThreadArg {
 
 
 DWORD WINAPI ThreadWholePhrase(LPVOID param) {
-    auto* arg = static_cast<ThreadArg*>(param);
+    ThreadArg* arg = (ThreadArg*)param;
 
     for (int i = 0; i < REPEAT_COUNT; ++i) {
         std::cout << arg->phrase << "\n";
@@ -44,7 +29,7 @@ DWORD WINAPI ThreadWholePhrase(LPVOID param) {
 
 
 DWORD WINAPI ThreadLettersUnsync(LPVOID param) {
-    auto* arg = static_cast<ThreadArg*>(param);
+    ThreadArg* arg = (ThreadArg*)param;
 
     for (int r = 0; r < REPEAT_COUNT; ++r) {
         for (char c : arg->phrase) {
@@ -58,7 +43,7 @@ DWORD WINAPI ThreadLettersUnsync(LPVOID param) {
 
 
 DWORD WINAPI ThreadCriticalSection(LPVOID param) {
-    auto* arg = static_cast<ThreadArg*>(param);
+    ThreadArg* arg = (ThreadArg*)param;
 
     for (int r = 0; r < REPEAT_COUNT; r++) {
 
@@ -66,7 +51,6 @@ DWORD WINAPI ThreadCriticalSection(LPVOID param) {
             EnterCriticalSection(&g_cs);
 
             if (g_turn == arg->id) {
-                // Наш ход
                 std::cout << arg->phrase << "\n";
                 g_turn = 1 - arg->id;
 
@@ -85,13 +69,14 @@ DWORD WINAPI ThreadCriticalSection(LPVOID param) {
 
 
 DWORD WINAPI ThreadMutex(LPVOID param) {
-    auto* arg = static_cast<ThreadArg*>(param);
+    ThreadArg* arg = (ThreadArg*)param;
 
     for (int r = 0; r < REPEAT_COUNT; r++) {
 
         while (true) {
             DWORD w = WaitForSingleObject(g_mutex, INFINITE);
-            if (w != WAIT_OBJECT_0) FatalWinError("WaitForSingleObject(mutex)");
+            if (w != WAIT_OBJECT_0)
+                std::cerr << GetLastError();
 
             if (g_turn == arg->id) {
                 std::cout << arg->phrase << "\n";
@@ -121,9 +106,11 @@ bool RunTwoThreads(LPTHREAD_START_ROUTINE routine, ThreadArg args[2]) {
         }
     }
 
-    DWORD w = WaitForMultipleObjects(2, th, TRUE, INFINITE);
-    if (w == WAIT_FAILED) FatalWinError("WaitForMultipleObjects");
-
+bool w = WaitForMultipleObjects(2, th, TRUE, INFINITE);
+    if (w == WAIT_FAILED) {
+        std::cerr << GetLastError();
+        return 0;
+    }
     CloseHandle(th[0]);
     CloseHandle(th[1]);
     return true;
@@ -160,14 +147,14 @@ int main() {
             std::cout << "Неверный ввод. Введите число от 0 до 4: ";
         }
 
-        if (mode == 0) {
-            std::cout << "Выход из программы.\n";
-            break;
-        }
 
         std::cout << "\nВыбор: " << mode << "\n\n";
 
         switch (mode) {
+        case 0:
+            std::cout << "Выход из программы.\n";
+            return 0;
+
         case 1:
             RunTwoThreads(ThreadWholePhrase, args);
             break;
@@ -185,7 +172,10 @@ int main() {
 
         case 4:
             g_mutex = CreateMutex(nullptr, FALSE, nullptr);
-            if (!g_mutex) FatalWinError("CreateMutex");
+            if (!g_mutex) {
+                std::cerr << GetLastError();
+                break;
+            }
             g_turn = 0;
             RunTwoThreads(ThreadMutex, args);
             CloseHandle(g_mutex);
