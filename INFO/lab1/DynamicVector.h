@@ -1,7 +1,7 @@
 #pragma once
-#include<iostream>
-#include<concepts>
-#include<cmath>
+#include <concepts>
+#include <cmath>
+#include <iostream>
 
 using namespace std;
 
