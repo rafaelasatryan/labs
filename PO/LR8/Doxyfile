@@ -1,0 +1,31 @@
+# --- Минимальная конфигурация Doxygen для PHP-проекта ---
+PROJECT_NAME           = "Адресная книга"
+OUTPUT_DIRECTORY       = docs
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+GENERATE_LATEX         = NO
+
+# Входные файлы проекта (текущая папка)
+INPUT                  = .
+RECURSIVE              = YES
+FILE_PATTERNS          = *.php
+EXTENSION_MAPPING      = php=PHP
+
+# Чтобы Doxygen показывал даже то, что не помечено тегами
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+
+# Просмотр исходников в HTML
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = NO
+
+# Для корректной обработки кириллицы
+INPUT_ENCODING         = UTF-8
+
+# Включаем поддержку markdown в комментариях (если нужно)
+MARKDOWN_SUPPORT       = YES
+
+# Если Doxygen не подхватывает PHP корректно, раскомментируй:
+# OPTIMIZE_OUTPUT_FOR_C  = NO
+# OPTIMIZE_OUTPUT_JAVA   = YES
