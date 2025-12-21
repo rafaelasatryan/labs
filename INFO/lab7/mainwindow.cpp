@@ -3,13 +3,16 @@
 #include <QMenuBar>
 #include <QMenu>
 #include <QAction>
+
 #include <QFileDialog>
 #include <QFile>
 #include <QTextStream>
+
 #include <QMessageBox>
-#include <QVBoxLayout>
+
 #include <QWidget>
-#include <QFont>
+#include <QVBoxLayout>
+
 #include <QTextCursor>
 #include <QTextCharFormat>
 
@@ -18,20 +21,21 @@ MainWindow::MainWindow(QWidget *parent)
 {
     buildUi();
     buildMenu();
-    setWindowTitle("Лабораторная 7");
+
+    setWindowTitle("Лабораторная 7 — Текстовый редактор (Qt5)");
     resize(800, 600);
 }
 
 void MainWindow::buildUi()
 {
-    auto *central = new QWidget(this);
-    auto *layout = new QVBoxLayout(central);
+    QWidget *central = new QWidget(this);
+    QVBoxLayout *layout = new QVBoxLayout(central);
 
     textEdit = new QTextEdit(central);
     textEdit->setPlaceholderText("Введите текст...");
 
-    btnSave = new QPushButton("Сохранить", central);
     btnIncFont = new QPushButton("Увеличить шрифт выделенного", central);
+    btnSave = new QPushButton("Сохранить", central);
 
     layout->addWidget(textEdit);
     layout->addWidget(btnIncFont);
@@ -39,21 +43,21 @@ void MainWindow::buildUi()
 
     setCentralWidget(central);
 
-    connect(btnSave, &QPushButton::clicked, this, &MainWindow::onSave);
-    connect(btnIncFont, &QPushButton::clicked, this, &MainWindow::onIncreaseSelectedFont);
+    connect(btnSave, SIGNAL(clicked()), this, SLOT(onSave()));
+    connect(btnIncFont, SIGNAL(clicked()), this, SLOT(onIncreaseSelectedFont()));
 }
 
 void MainWindow::buildMenu()
 {
     QMenu *fileMenu = menuBar()->addMenu("Файл");
 
-    QAction *actOpen = fileMenu->addAction("Открыть");
-    QAction *actSave = fileMenu->addAction("Сохранить");
+    QAction *actOpen   = fileMenu->addAction("Открыть");
+    QAction *actSave   = fileMenu->addAction("Сохранить");
     QAction *actSaveAs = fileMenu->addAction("Сохранить как...");
 
-    connect(actOpen, &QAction::triggered, this, &MainWindow::onOpen);
-    connect(actSave, &QAction::triggered, this, &MainWindow::onSave);
-    connect(actSaveAs, &QAction::triggered, this, &MainWindow::onSaveAs);
+    connect(actOpen, SIGNAL(triggered()), this, SLOT(onOpen()));
+    connect(actSave, SIGNAL(triggered()), this, SLOT(onSave()));
+    connect(actSaveAs, SIGNAL(triggered()), this, SLOT(onSaveAs()));
 }
 
 void MainWindow::onOpen()
@@ -75,6 +79,16 @@ void MainWindow::onOpen()
     setWindowTitle(QString("Лабораторная 7 — %1").arg(currentFilePath));
 }
 
+void MainWindow::onSave()
+{
+    if (currentFilePath.isEmpty()) {
+        onSaveAs();
+        return;
+    }
+
+    saveToFile(currentFilePath);
+}
+
 void MainWindow::onSaveAs()
 {
     QString path = QFileDialog::getSaveFileName(
@@ -87,7 +101,6 @@ void MainWindow::onSaveAs()
     if (path.isEmpty())
         return;
 
-    // если пользователь не указал расширение, добавим .txt
     if (!path.endsWith(".txt", Qt::CaseInsensitive))
         path += ".txt";
 
@@ -98,40 +111,28 @@ void MainWindow::onSaveAs()
     setWindowTitle(QString("Лабораторная 7 — %1").arg(currentFilePath));
 }
 
-void MainWindow::onSave()
-{
-    if (currentFilePath.isEmpty()) {
-        onSaveAs();
-        return;
-    }
-
-    saveToFile(currentFilePath);
-}
-
 bool MainWindow::loadFromFile(const QString &path)
 {
-    QFile f(path);
-    if (!f.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QMessageBox::warning(this, "Ошибка", "Не удалось открыть файл для чтения.");
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::warning(this, "Ошибка", "Не удалось открыть файл для чтения");
         return false;
     }
 
-    QTextStream in(&f);
-    in.setEncoding(QStringConverter::Utf8); // Qt6
+    QTextStream in(&file);
     textEdit->setPlainText(in.readAll());
     return true;
 }
 
 bool MainWindow::saveToFile(const QString &path)
 {
-    QFile f(path);
-    if (!f.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        QMessageBox::warning(this, "Ошибка", "Не удалось открыть файл для записи.");
+    QFile file(path);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QMessageBox::warning(this, "Ошибка", "Не удалось открыть файл для записи");
         return false;
     }
 
-    QTextStream out(&f);
-    out.setEncoding(QStringConverter::Utf8); // Qt6
+    QTextStream out(&file);
     out << textEdit->toPlainText();
     return true;
 }
@@ -139,23 +140,21 @@ bool MainWindow::saveToFile(const QString &path)
 void MainWindow::onIncreaseSelectedFont()
 {
     QTextCursor cursor = textEdit->textCursor();
-    QTextCharFormat fmt = cursor.charFormat();
+    QTextCharFormat format = cursor.charFormat();
 
-    qreal size = fmt.fontPointSize();
-    if (size <= 0.0) {
-        size = textEdit->fontPointSize();
-        if (size <= 0.0) {
-            size = textEdit->font().pointSizeF();
-        }
-        if (size <= 0.0) size = 12.0;
+    qreal size = format.fontPointSize();
+    if (size <= 0) {
+        size = textEdit->font().pointSizeF();
+        if (size <= 0)
+            size = 12;
     }
 
-    fmt.setFontPointSize(size + 2.0);
+    format.setFontPointSize(size + 2);
 
     if (cursor.hasSelection()) {
-        cursor.mergeCharFormat(fmt);
-        textEdit->mergeCurrentCharFormat(fmt);
+        cursor.mergeCharFormat(format);
+        textEdit->mergeCurrentCharFormat(format);
     } else {
-        textEdit->mergeCurrentCharFormat(fmt);
+        textEdit->mergeCurrentCharFormat(format);
     }
 }

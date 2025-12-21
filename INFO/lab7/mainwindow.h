@@ -8,7 +8,6 @@
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
 public:
     explicit MainWindow(QWidget *parent = nullptr);
 
@@ -29,5 +28,5 @@ private:
     QPushButton *btnSave = nullptr;
     QPushButton *btnIncFont = nullptr;
 
-    QString currentFilePath;
+    QString currentFilePath; // путь к открытому/сохраненному файлу
 };
