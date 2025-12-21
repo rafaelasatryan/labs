@@ -1,0 +1,10 @@
+# ninja log v6
+5	645	7880418459063706	LABA6_autogen/timestamp	e62b29b00223766d
+5	645	7880418459063706	LABA6_autogen/mocs_compilation.cpp	e62b29b00223766d
+5	645	7880418459063706	C:/Qtprojects/LABA6/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/LABA6_autogen/timestamp	e62b29b00223766d
+5	645	7880418459063706	C:/Qtprojects/LABA6/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/LABA6_autogen/mocs_compilation.cpp	e62b29b00223766d
+660	2688	7880418459969175	CMakeFiles/LABA6.dir/person.cpp.obj	66d14ac876b8ba44
+650	3155	7880418459869218	CMakeFiles/LABA6.dir/LABA6_autogen/mocs_compilation.cpp.obj	dd83dc4c392de497
+653	3225	7880418459904235	CMakeFiles/LABA6.dir/main.cpp.obj	c0b93f9b4a4e9d56
+657	3911	7880418459939145	CMakeFiles/LABA6.dir/mainwindow.cpp.obj	a9d32680881b1652
+3912	4177	7880418492491558	LABA6.exe	68ed3a98074e821b
