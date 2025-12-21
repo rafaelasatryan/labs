@@ -5,3 +5,17 @@ CMakeFiles/
 CMakeCache.txt
 *.ninja
 .ninja_*
+
+# Qt / CMake / QtCreator junk
+build/
+**/build/
+*.user
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.ninja
+.ninja_*
+*.o
+*.obj
+*.exe
