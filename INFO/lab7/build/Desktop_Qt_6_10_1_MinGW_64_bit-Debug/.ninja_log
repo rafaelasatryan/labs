@@ -1,0 +1,15 @@
+# ninja log v6
+8	803	7880423931641254	LABA7_autogen/timestamp	4404d405f8475717
+8	803	7880423931641254	LABA7_autogen/mocs_compilation.cpp	4404d405f8475717
+8	803	7880423931641254	C:/Qtprojects/LABA7/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/LABA7_autogen/timestamp	4404d405f8475717
+8	803	7880423931641254	C:/Qtprojects/LABA7/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/LABA7_autogen/mocs_compilation.cpp	4404d405f8475717
+809	3725	7880423932677718	CMakeFiles/LABA7.dir/LABA7_autogen/mocs_compilation.cpp.obj	d2690b36da6d619
+813	3803	7880423932717738	CMakeFiles/LABA7.dir/main.cpp.obj	fecf9e54439e9778
+817	4421	7880423932763012	CMakeFiles/LABA7.dir/mainwindow.cpp.obj	f9eb5b9f5ce49a88
+4422	4633	7880423968809507	LABA7.exe	34992dfa05e38366
+36	206	7880427586735029	LABA7_autogen/timestamp	4404d405f8475717
+36	206	7880427586735029	LABA7_autogen/mocs_compilation.cpp	4404d405f8475717
+36	206	7880427586735029	C:/Qtprojects/LABA7/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/LABA7_autogen/timestamp	4404d405f8475717
+36	206	7880427586735029	C:/Qtprojects/LABA7/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/LABA7_autogen/mocs_compilation.cpp	4404d405f8475717
+207	2986	7880427588438641	CMakeFiles/LABA7.dir/mainwindow.cpp.obj	f9eb5b9f5ce49a88
+2986	3208	7880427616225379	LABA7.exe	34992dfa05e38366

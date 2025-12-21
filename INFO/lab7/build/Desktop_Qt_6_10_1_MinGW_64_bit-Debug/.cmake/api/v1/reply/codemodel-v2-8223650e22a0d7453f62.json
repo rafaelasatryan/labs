@@ -1,0 +1,79 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-ea1eb726268a672ea9ca.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "LABA7",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "LABA7::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-LABA7-Debug-06a1b98a824ee9721aab.json",
+					"name" : "LABA7",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "LABA7_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-LABA7_autogen-Debug-943ebd4deddd43f81cd4.json",
+					"name" : "LABA7_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "LABA7_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-LABA7_autogen_timestamp_deps-Debug-5faa590eefa4b6585a12.json",
+					"name" : "LABA7_autogen_timestamp_deps",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Qtprojects/LABA7/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug",
+		"source" : "C:/Qtprojects/LABA7"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}
